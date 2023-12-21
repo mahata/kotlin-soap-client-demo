@@ -1,7 +1,7 @@
 package org.mahata.kotlinsoapclientdemo
 
-import com.example.consumingwebservice.wsdl.GetCountryRequest
-import com.example.consumingwebservice.wsdl.GetCountryResponse
+import org.mahata.kotlinsoapclientdemo.wsdl.GetCountryRequest
+import org.mahata.kotlinsoapclientdemo.wsdl.GetCountryResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport
@@ -16,7 +16,8 @@ class CountryClient : WebServiceGatewaySupport() {
 
         return webServiceTemplate
             .marshalSendAndReceive(
-                "http://localhost:8080/ws/countries", request,
+                "http://localhost:18081/ws/countries",
+                request,
                 SoapActionCallback("http://spring.io/guides/gs-producing-web-service/GetCountryRequest")
             ) as GetCountryResponse
     }

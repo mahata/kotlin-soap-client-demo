@@ -32,9 +32,6 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-//    implementation("org.springframework.boot:spring-boot-starter-web-services") {
-//        exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
-//    }
     add("jaxws", "com.sun.xml.ws:jaxws-tools:3.0.0")
     add("jaxws", "jakarta.xml.ws:jakarta.xml.ws-api:3.0.0")
     add("jaxws", "jakarta.xml.bind:jakarta.xml.bind-api:3.0.0")
@@ -54,9 +51,9 @@ val wsimport by tasks.creating {
                 "destdir" to jaxwsSourceDir,
                 "extension" to "true",
                 "verbose" to true,
-                "wsdl" to "http://localhost:8080/ws/countries.wsdl",
+                "wsdl" to "http://localhost:18081/ws/countries.wsdl", // Path to WSDL
                 "xnocompile" to true,
-                "package" to "com.example.consumingwebservice.wsdl") {
+                "package" to "org.mahata.kotlinsoapclientdemo.wsdl") {
                 "xjcarg"("value" to "-XautoNameResolution")
             }
         }
