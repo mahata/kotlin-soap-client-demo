@@ -14,8 +14,8 @@ class CountryConfiguration {
         }
 
     @Bean
-    fun countryClient(marshaller: Jaxb2Marshaller): CountryClient =
-        CountryClient().apply {
+    fun countryClient(marshaller: Jaxb2Marshaller): CountryRepository =
+        CountryRepository().apply {
             defaultUri = "http://localhost:18081/ws"
             this.marshaller = marshaller
             unmarshaller = marshaller

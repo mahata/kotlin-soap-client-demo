@@ -35,6 +35,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.13.8")
 
     add("jaxws", "com.sun.xml.ws:jaxws-tools:3.0.0")
     add("jaxws", "jakarta.xml.ws:jakarta.xml.ws-api:3.0.0")

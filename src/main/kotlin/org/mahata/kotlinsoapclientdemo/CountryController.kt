@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/countries")
 class CountryController(
-    private val countryClient: CountryClient,
+    private val countryRepository: CountryRepository,
 ) {
     @GetMapping
-    fun get(): String = countryClient.getCountry("Spain").country.currency.toString()
+    fun get(): String = countryRepository.getCountry("Spain").country.currency.toString()
 }

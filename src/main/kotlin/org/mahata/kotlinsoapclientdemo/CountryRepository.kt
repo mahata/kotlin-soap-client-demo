@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport
 import org.springframework.ws.soap.client.core.SoapActionCallback
 
-class CountryClient : WebServiceGatewaySupport() {
+class CountryRepository : WebServiceGatewaySupport() {
     fun getCountry(country: String): GetCountryResponse {
         val request = GetCountryRequest().apply { name = country }
 
@@ -22,6 +22,6 @@ class CountryClient : WebServiceGatewaySupport() {
     }
 
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(CountryClient::class.java)
+        private val log: Logger = LoggerFactory.getLogger(CountryRepository::class.java)
     }
 }
