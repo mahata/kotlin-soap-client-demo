@@ -8,7 +8,6 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport
 import org.springframework.ws.soap.client.core.SoapActionCallback
 
 class CountryClient : WebServiceGatewaySupport() {
-
     fun getCountry(country: String): GetCountryResponse {
         val request = GetCountryRequest().apply { name = country }
 
@@ -18,7 +17,7 @@ class CountryClient : WebServiceGatewaySupport() {
             .marshalSendAndReceive(
                 "http://localhost:18081/ws/countries",
                 request,
-                SoapActionCallback("http://spring.io/guides/gs-producing-web-service/GetCountryRequest")
+                SoapActionCallback("http://spring.io/guides/gs-producing-web-service/GetCountryRequest"),
             ) as GetCountryResponse
     }
 

@@ -1,10 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.4"
     kotlin("jvm") version "1.9.20"
     kotlin("plugin.spring") version "1.9.20"
+    id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
 }
 
 group = "org.mahata"
@@ -14,7 +16,9 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
 
-val jaxwsSourceDir by extra { "${buildDir}/generated/sources/jaxws" }
+val jaxwsSourceDir by extra {
+    layout.buildDirectory.dir("generated/sources/jaxws").get().asFile.absolutePath
+}
 
 configurations {
     create("jaxws")
@@ -44,21 +48,33 @@ val wsimport by tasks.creating {
     doLast {
         project.mkdir(jaxwsSourceDir)
         ant.withGroovyBuilder {
-            "taskdef"("name" to "wsimport",
+            "taskdef"(
+                "name" to "wsimport",
                 "classname" to "com.sun.tools.ws.ant.WsImport",
-                "classpath" to configurations["jaxws"].asPath)
-            "wsimport"("keep" to true,
+                "classpath" to configurations["jaxws"].asPath,
+            )
+            "wsimport"(
+                "keep" to true,
                 "destdir" to jaxwsSourceDir,
                 "extension" to "true",
                 "verbose" to true,
-                "wsdl" to "http://localhost:18081/ws/countries.wsdl", // Path to WSDL
+                // Path to WSDL
+                "wsdl" to "http://localhost:18081/ws/countries.wsdl",
                 "xnocompile" to true,
-                "package" to "org.mahata.kotlinsoapclientdemo.wsdl") {
+                "package" to "org.mahata.kotlinsoapclientdemo.wsdl",
+            ) {
                 "xjcarg"("value" to "-XautoNameResolution")
             }
         }
     }
 }
+
+val lintOption: String =
+    if (System.getenv("GITHUB_WORKFLOW") == null) {
+        "ktlintFormat"
+    } else {
+        "ktlintCheck"
+    }
 
 sourceSets {
     main {
@@ -74,9 +90,17 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "17"
     }
 
-    dependsOn(wsimport)
+    dependsOn(wsimport, lintOption)
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+ktlint {
+    verbose.set(true)
+    outputToConsole.set(true)
+    reporters {
+        reporter(ReporterType.CHECKSTYLE)
+    }
 }
